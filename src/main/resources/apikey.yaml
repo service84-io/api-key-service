@@ -1,0 +1,309 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+openapi: 3.0.1
+info:
+  title: API Key Service
+  description: Manage API Keys
+  contact:
+    email: Tyler@service84.io
+  license:
+    name: The Apache License, Version 2.0
+  version: 1.0.0
+servers:
+- url: http://apikey/
+- url: http://apikey.service84/
+- url: https://apikey.api.service84.io/
+- url: https://apikey.api.dev.service84.io/
+- url: http://localhost:31203/
+paths:
+  /api_keys:
+    get:
+      summary: Retrieve the API Keys
+      tags:
+        - api_key
+      security:
+        - BearerAuth: []
+      operationId: retrieve_api_keys
+      parameters:
+      - $ref: '#/components/parameters/Authentication'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        200:
+          $ref: '#/components/responses/APIKeyPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/InsufficientPermission'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /api_keys/authenticate:
+    post:
+      summary: Authenticate an API Key
+      tags:
+        - api_key
+      security:
+        - BearerAuth: []
+      operationId: authenticate_api_key
+      requestBody:
+        $ref: '#/components/requestBodies/APIKeyAuthentication'
+      parameters:
+      - $ref: '#/components/parameters/Authentication'
+      responses:
+        200:
+          $ref: '#/components/responses/APIKey'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/AuthenticationFailed'
+        403:
+          $ref: '#/components/responses/InsufficientPermission'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /api_keys/request:
+    post:
+      summary: Request an API Key
+      tags:
+        - api_key
+      security:
+        - BearerAuth: []
+      operationId: request_api_key
+      requestBody:
+        $ref: '#/components/requestBodies/APIKeyRequest'
+      parameters:
+      - $ref: '#/components/parameters/Authentication'
+      responses:
+        200:
+          $ref: '#/components/responses/APIKeyDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/InsufficientPermission'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /api_keys/{id}:
+    get:
+      summary: Retrieve an API Key
+      tags:
+        - api_key
+      security:
+        - BearerAuth: []
+      operationId: retrieve_api_key
+      parameters:
+      - $ref: '#/components/parameters/APIKeyId'
+      - $ref: '#/components/parameters/Authentication'
+      responses:
+        200:
+          $ref: '#/components/responses/APIKey'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/InsufficientPermission'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /api_keys/{id}/revoke:
+    post:
+      summary: Revoke an API Key
+      tags:
+        - api_key
+      security:
+        - BearerAuth: []
+      operationId: revoke_api_key
+      parameters:
+      - $ref: '#/components/parameters/APIKeyId'
+      - $ref: '#/components/parameters/Authentication'
+      responses:
+        204:
+          description: API Key Revoked
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/InsufficientPermission'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    APIKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    APIKeyAuthentication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        secret:
+          type: string
+    APIKey:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        subject:
+          type: string
+          format: uuid
+        name:
+          type: string
+        secretPrefix:
+          type: string
+    APIKeyDetails:
+      allOf:
+        - $ref: '#/components/schemas/APIKey'
+        - type: object
+          properties:
+            secret:
+              type: string
+    Metadata:
+      type: object
+      properties:
+        cursor:
+          type: string
+        nextCursor:
+          type: string
+        total:
+          type: integer
+        count:
+          type: integer
+    APIKeyPage:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/APIKey'
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+  requestBodies:
+    APIKeyRequest:
+      description: API Key Request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIKeyRequest'
+    APIKeyAuthentication:
+      description: API Key Authentication
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIKeyAuthentication'
+  responses:
+    APIKey:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIKey'
+    APIKeyPage:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIKeyPage'
+    APIKeyDetails:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIKeyDetails'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    AuthenticationFailed:
+      description: Authentication Failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InsufficientPermission:
+      description: Insufficient Permission
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Authentication:
+      in: header
+      name: Authentication
+      description: The Authentication Header
+      required: false
+      schema:
+        type: string
+    Cursor:
+      in: query
+      name: cursor
+      description: The cursor of the page to get
+      required: false
+      schema:
+        type: string
+    Limit:
+      in: query
+      name: limit
+      description: The size of the page to get
+      required: false
+      schema:
+        minimum: 1
+        type: integer
+        default: 20
+    APIKeyId:
+      in: path
+      name: id
+      description: ID of an API Key
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: api_key
+    description: Acts on or returns an API Key

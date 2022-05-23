@@ -30,7 +30,7 @@ def s84Name = 'API Key Service'
 def s84JarName = 'apikey-service'
 def s84Description = 'A service for managing api keys'
 def s84GithubBase = 'https://github.com/service84-io/api-key-service'
-def s84Version = '0.1.0'
+def s84Version = '0.1.1-SNAPSHOT'
 
 // configure all java components to be published
 publishing {

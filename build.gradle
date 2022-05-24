@@ -30,7 +30,7 @@ def s84Name = 'API Key Service'
 def s84JarName = 'apikey-service'
 def s84Description = 'A service for managing api keys'
 def s84GithubBase = 'https://github.com/service84-io/api-key-service'
-def s84Version = '0.1.1-SNAPSHOT'
+def s84Version = '0.5.0-SNAPSHOT'
 
 // configure all java components to be published
 publishing {
@@ -42,8 +42,8 @@ publishing {
   repositories {
     maven {
       name = 'OSSRH'
-      def releasesURL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-      def snapshotsURL = 'https://oss.sonatype.org/content/repositories/snapshots'
+      def releasesURL = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+      def snapshotsURL = 'https://s01.oss.sonatype.org/content/repositories/snapshots'
       url = s84Version.endsWith('SNAPSHOT') ? snapshotsURL : releasesURL
 
       credentials {
@@ -161,7 +161,7 @@ repositories {
   jcenter()
   mavenCentral()
   maven { url 'https://plugins.gradle.org/m2/' }
-  maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+  maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 configurations {
@@ -197,13 +197,13 @@ dependencies {
 
   implementation 'net.logstash.logback:logstash-logback-encoder:4.11'
 
-  implementation 'io.service84.library:exceptionalresult:1.3.0-SNAPSHOT'
-  implementation 'io.service84.library:authutils:1.3.0-SNAPSHOT'
-  implementation 'io.service84.library:keyvaluepersistence:1.3.0-SNAPSHOT'
+  implementation 'io.service84.library:exceptionalresult:1.3.50-SNAPSHOT'
+  implementation 'io.service84.library:authutils:1.3.50-SNAPSHOT'
+  implementation 'io.service84.library:keyvaluepersistence:1.3.50-SNAPSHOT'
 
-  implementation 'io.service84.library:standardauth:1.3.2-SNAPSHOT'
-  implementation 'io.service84.library:standardpersistence:1.3.1-SNAPSHOT'
-  implementation 'io.service84.library:standardservice:1.3.1-SNAPSHOT'
+  implementation 'io.service84.library:standardauth:1.3.50-SNAPSHOT'
+  implementation 'io.service84.library:standardpersistence:1.3.50-SNAPSHOT'
+  implementation 'io.service84.library:standardservice:1.3.50-SNAPSHOT'
 
   implementation 'org.hibernate:hibernate-envers:5.4.22.Final'
   runtimeOnly 'org.postgresql:postgresql'

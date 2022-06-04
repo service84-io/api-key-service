@@ -15,6 +15,6 @@ ext {
   s84JarName = 'apikey-service'
   s84Description = 'A service for managing api keys'
   s84GithubBase = 'https://github.com/service84-io/api-key-service'
-  s84Version = '0.5.0'
+  s84Version = '0.5.1-SNAPSHOT'
 }
 

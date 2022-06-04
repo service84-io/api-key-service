@@ -25,12 +25,9 @@ plugins {
 apply plugin: 'eclipse'
 apply plugin: 'java'
 
+apply from: 'version.gradle'
+
 def s84Group = 'io.service84.services'
-def s84Name = 'API Key Service'
-def s84JarName = 'apikey-service'
-def s84Description = 'A service for managing api keys'
-def s84GithubBase = 'https://github.com/service84-io/api-key-service'
-def s84Version = '0.5.0-SNAPSHOT'
 def s84CoreName = s84JarName.split('-')[0]
 
 // configure all java components to be published

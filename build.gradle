@@ -205,13 +205,13 @@ dependencies {
 
   implementation 'net.logstash.logback:logstash-logback-encoder:4.11'
 
-  implementation 'io.service84.library:exceptionalresult:1.3.50-SNAPSHOT'
-  implementation 'io.service84.library:authutils:1.3.50-SNAPSHOT'
-  implementation 'io.service84.library:keyvaluepersistence:1.3.50-SNAPSHOT'
+  implementation 'io.service84.library:exceptionalresult:1.3.50'
+  implementation 'io.service84.library:authutils:1.3.50'
+  implementation 'io.service84.library:keyvaluepersistence:1.3.50'
 
-  implementation 'io.service84.library:standardauth:1.3.50-SNAPSHOT'
-  implementation 'io.service84.library:standardpersistence:1.3.50-SNAPSHOT'
-  implementation 'io.service84.library:standardservice:1.3.50-SNAPSHOT'
+  implementation 'io.service84.library:standardauth:1.3.50'
+  implementation 'io.service84.library:standardpersistence:1.3.50'
+  implementation 'io.service84.library:standardservice:1.3.50'
 
   implementation 'org.hibernate:hibernate-envers:5.4.22.Final'
   runtimeOnly 'org.postgresql:postgresql'

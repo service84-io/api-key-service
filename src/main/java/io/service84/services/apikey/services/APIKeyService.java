@@ -44,14 +44,14 @@ public class APIKeyService {
     public String secret;
   }
 
-  private static String AuthenticateAnyAPIKey = "authentication:authenticate_any_api_key";
-  private static String RequestSelfAPIKey = "authentication:request_self_api_key";
-  private static String RetrieveAnyAPIKey = "authentication:retrieve_any_api_key";
-  private static String RetrieveSelfAPIKey = "authentication:retrieve_self_api_key";
-  private static String RetrieveAnyAPIKeys = "authentication:retrieve_any_api_keys";
-  private static String RetrieveSelfAPIKeys = "authentication:retrieve_self_api_keys";
-  private static String RevokeAnyAPIKey = "authentication:revoke_any_api_key";
-  private static String RevokeSelfAPIKey = "authentication:revoke_self_api_key";
+  private static String AuthenticateAnyAPIKey = "apikey:authenticate_any_api_key";
+  private static String RequestSelfAPIKey = "apikey:request_self_api_key";
+  private static String RetrieveAnyAPIKey = "apikey:retrieve_any_api_key";
+  private static String RetrieveSelfAPIKey = "apikey:retrieve_self_api_key";
+  private static String RetrieveAnyAPIKeys = "apikey:retrieve_any_api_keys";
+  private static String RetrieveSelfAPIKeys = "apikey:retrieve_self_api_keys";
+  private static String RevokeAnyAPIKey = "apikey:revoke_any_api_key";
+  private static String RevokeSelfAPIKey = "apikey:revoke_self_api_key";
 
   private static SCryptPasswordEncoder encoder = new SCryptPasswordEncoder();
   private static SecureRandom secureRandom = new SecureRandom();

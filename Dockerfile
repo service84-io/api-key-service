@@ -3,6 +3,7 @@ WORKDIR /app
 COPY .openapi-generator-ignore .openapi-generator-ignore
 COPY LICENSE LICENSE
 COPY NOTICE NOTICE
+COPY version.gradle version.gradle
 COPY build.gradle build.gradle
 RUN gradle --console verbose downloadDependencies
 COPY src src

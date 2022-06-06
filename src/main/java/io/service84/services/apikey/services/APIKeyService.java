@@ -44,14 +44,14 @@ public class APIKeyService {
     public String secret;
   }
 
-  private static String AuthenticateAnyAPIKey = "apikey:authenticate_any_api_key";
-  private static String RequestSelfAPIKey = "apikey:request_self_api_key";
-  private static String RetrieveAnyAPIKey = "apikey:retrieve_any_api_key";
-  private static String RetrieveSelfAPIKey = "apikey:retrieve_self_api_key";
-  private static String RetrieveAnyAPIKeys = "apikey:retrieve_any_api_keys";
-  private static String RetrieveSelfAPIKeys = "apikey:retrieve_self_api_keys";
-  private static String RevokeAnyAPIKey = "apikey:revoke_any_api_key";
-  private static String RevokeSelfAPIKey = "apikey:revoke_self_api_key";
+  private static String AuthenticateAnyAPIKeyScope = "apikey:authenticate_any_api_key";
+  private static String RequestSelfAPIKeyScope = "apikey:request_self_api_key";
+  private static String RetrieveAnyAPIKeyScope = "apikey:retrieve_any_api_key";
+  private static String RetrieveSelfAPIKeyScope = "apikey:retrieve_self_api_key";
+  private static String RetrieveAnyAPIKeysScope = "apikey:retrieve_any_api_keys";
+  private static String RetrieveSelfAPIKeysScope = "apikey:retrieve_self_api_keys";
+  private static String RevokeAnyAPIKeyScope = "apikey:revoke_any_api_key";
+  private static String RevokeSelfAPIKeyScope = "apikey:revoke_self_api_key";
 
   private static SCryptPasswordEncoder encoder = new SCryptPasswordEncoder();
   private static SecureRandom secureRandom = new SecureRandom();
@@ -72,7 +72,7 @@ public class APIKeyService {
     logger.debug("authenticatedAPIKey");
     List<String> subjectScopes = authenticationService.getScopes();
 
-    if (!subjectScopes.contains(AuthenticateAnyAPIKey)) {
+    if (!subjectScopes.contains(AuthenticateAnyAPIKeyScope)) {
       throw new InsufficientPermission();
     }
 
@@ -89,7 +89,7 @@ public class APIKeyService {
     logger.debug("requestAPIKey");
     List<String> subjectScopes = authenticationService.getScopes();
 
-    if (subjectScopes.contains(RequestSelfAPIKey)) {
+    if (subjectScopes.contains(RequestSelfAPIKeyScope)) {
       UUID subject = UUID.fromString(authenticationService.getSubject());
       byte[] secretBytes = new byte[30];
       secureRandom.nextBytes(secretBytes);
@@ -110,11 +110,11 @@ public class APIKeyService {
     logger.debug("retrieveApiKey");
     List<String> subjectScopes = authenticationService.getScopes();
 
-    if (subjectScopes.contains(RetrieveAnyAPIKey)) {
+    if (subjectScopes.contains(RetrieveAnyAPIKeyScope)) {
       return repository.findByIdAndRevokedIsFalse(id).orElseThrow(EntityNotFound.supplier());
     }
 
-    if (subjectScopes.contains(RetrieveSelfAPIKey)) {
+    if (subjectScopes.contains(RetrieveSelfAPIKeyScope)) {
       String subject = authenticationService.getSubject();
       return repository
           .findBySubjectAndIdAndRevokedIsFalse(subject, id)
@@ -128,11 +128,11 @@ public class APIKeyService {
     logger.debug("retrieveApiKeys");
     List<String> subjectScopes = authenticationService.getScopes();
 
-    if (subjectScopes.contains(RetrieveAnyAPIKeys)) {
+    if (subjectScopes.contains(RetrieveAnyAPIKeysScope)) {
       return repository.findAllByRevokedIsFalse(pageable);
     }
 
-    if (subjectScopes.contains(RetrieveSelfAPIKeys)) {
+    if (subjectScopes.contains(RetrieveSelfAPIKeysScope)) {
       String subject = authenticationService.getSubject();
       return repository.findAllBySubjectAndRevokedIsFalse(subject, pageable);
     }
@@ -147,9 +147,9 @@ public class APIKeyService {
 
     APIKey apiKey = retrieveApiKey(id);
 
-    if (!subjectScopes.contains(RevokeAnyAPIKey)
+    if (!subjectScopes.contains(RevokeAnyAPIKeyScope)
         && (!apiKey.getSubject().toString().equals(subject)
-            || !subjectScopes.contains(RevokeSelfAPIKey))) {
+            || !subjectScopes.contains(RevokeSelfAPIKeyScope))) {
       throw new InsufficientPermission();
     }
 
